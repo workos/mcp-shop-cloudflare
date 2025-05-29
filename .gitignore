@@ -1,0 +1,5 @@
+.wrangler/
+node_modules/
+
+# remove this when the secrets are removed
+wrangler.toml
