@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
   },
   "keywords": [],
   "author": "",
@@ -12,13 +14,16 @@
   "dependencies": {
     "@cloudflare/workers-oauth-provider": "^0.0.5",
     "@modelcontextprotocol/sdk": "^1.12.1",
+    "@workos-inc/node": "^7.52.0",
+    "agents": "^0.0.94",
     "jose": "^6.0.11"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250529.0",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
-    "wrangler": "^4.18.0"
+    "wrangler": "^4.18.0",
+    "zod": "^3.25.36"
   },
   "pnpm": {
     "ignoredBuiltDependencies": [
