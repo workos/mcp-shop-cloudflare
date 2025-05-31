@@ -3,6 +3,16 @@ import type { Env } from './index';
 import { WorkOS } from '@workos-inc/node';
 import * as jose from 'jose';
 
+interface OAuthRequest {
+  responseType: string;
+  clientId: string;
+  redirectUri: string;
+  scope: string[];
+  state: string;
+  codeChallenge: string;
+  codeChallengeMethod: string;
+}
+
 export const AuthHandler: ExportedHandler<Env & { OAUTH_PROVIDER: any }> = {
   async fetch(request: Request, env: Env & { OAUTH_PROVIDER: any }): Promise<Response> {
     const url = new URL(request.url);
@@ -10,7 +20,7 @@ export const AuthHandler: ExportedHandler<Env & { OAUTH_PROVIDER: any }> = {
 
     if (url.pathname === '/authorize') {
       // Parse the OAuth request from the OAuth provider
-      const oauthReqInfo = await env.OAUTH_PROVIDER.parseAuthRequest(request);
+      const oauthReqInfo = (await env.OAUTH_PROVIDER.parseAuthRequest(request)) as OAuthRequest;
       if (!oauthReqInfo.clientId) {
         return new Response('Invalid request', { status: 400 });
       }
