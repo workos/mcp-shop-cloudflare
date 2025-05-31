@@ -2,12 +2,14 @@ import { McpAgent } from 'agents/mcp';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { Env } from './index';
 import type { User } from '@workos-inc/node';
+import z from 'zod';
 
 interface AuthContext extends Record<string, unknown> {
   user: User;
   accessToken: string;
   permissions: string[];
   email: string;
+  grantId: string;
 }
 
 export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
@@ -41,6 +43,7 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
         ],
       };
     });
+
     // List inventory tool
     this.server.tool(
       'listMcpShopInventory',
@@ -71,9 +74,9 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
       'buyMcpShopItem',
       'Orders a t-shirt from the MCP shop. Requires company name, mailing address, and shirt size.',
       {
-        company: { type: 'string', required: true },
-        mailingAddress: { type: 'string', required: true },
-        tshirtSize: { type: 'string', required: true },
+        company: z.string(),
+        mailingAddress: z.string(),
+        tshirtSize: z.enum(['S', 'M', 'L', 'XL', 'XXL']),
       },
       async args => {
         const order = {
