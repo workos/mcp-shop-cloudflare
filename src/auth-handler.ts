@@ -15,6 +15,7 @@ interface OAuthRequest {
 
 export const AuthHandler: ExportedHandler<Env & { OAUTH_PROVIDER: any }> = {
   async fetch(request: Request, env: Env & { OAUTH_PROVIDER: any }): Promise<Response> {
+    const workos = new WorkOS(env.WORKOS_API_KEY);
     const url = new URL(request.url);
     console.log('AuthHandler:', url.pathname);
 
@@ -24,11 +25,6 @@ export const AuthHandler: ExportedHandler<Env & { OAUTH_PROVIDER: any }> = {
       if (!oauthReqInfo.clientId) {
         return new Response('Invalid request', { status: 400 });
       }
-
-      // Initialize WorkOS
-      const workos = new WorkOS(env.WORKOS_API_KEY, {
-        apiHostname: env.WORKOS_API_HOSTNAME,
-      });
 
       // Create WorkOS authorization URL
       const authUrl = workos.userManagement.getAuthorizationUrl({
@@ -52,11 +48,6 @@ export const AuthHandler: ExportedHandler<Env & { OAUTH_PROVIDER: any }> = {
 
       // Decode the OAuth request info
       const oauthReqInfo = JSON.parse(atob(state));
-
-      // Exchange WorkOS code for user info
-      const workos = new WorkOS(env.WORKOS_API_KEY, {
-        apiHostname: env.WORKOS_API_HOSTNAME,
-      });
 
       try {
         const response = await workos.userManagement.authenticateWithCode({

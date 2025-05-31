@@ -5,7 +5,6 @@ import { AuthHandler } from './auth-handler';
 export interface Env {
   WORKOS_CLIENT_ID: string;
   WORKOS_API_KEY: string;
-  WORKOS_API_HOSTNAME: string;
   WORKOS_AUTHKIT_DOMAIN: string;
 
   OAUTH_KV: KVNamespace;

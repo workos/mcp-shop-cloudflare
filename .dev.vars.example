@@ -1,0 +1,3 @@
+WORKOS_AUTHKIT_DOMAIN='some-random-domain.authkit.app'
+WORKOS_API_KEY='sk_...'
+WORKOS_CLIENT_ID='client_...'
