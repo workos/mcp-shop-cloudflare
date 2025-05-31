@@ -16,7 +16,7 @@ export interface Env {
 
 export default new OAuthProvider({
   apiRoute: '/mcp',
-  apiHandler: McpShopServer.mount('/mcp') as any, // Note: using mount() not serve()
+  apiHandler: McpShopServer.mount('/mcp'), // Note: using mount() not serve()
   defaultHandler: AuthHandler as any,
   authorizeEndpoint: '/authorize',
   tokenEndpoint: '/token',

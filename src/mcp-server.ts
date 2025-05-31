@@ -12,7 +12,7 @@ interface AuthContext extends Record<string, unknown> {
 
 export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
   server = new McpServer({
-    name: 'MCP Shop',
+    name: 'MCP Shop on Cloudflare',
     version: '1.0.0',
   });
 
