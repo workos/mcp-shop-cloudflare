@@ -1,13 +1,13 @@
 import { McpAgent } from 'agents/mcp';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { Env } from './index';
+import type { User } from '@workos-inc/node';
 
 interface AuthContext extends Record<string, unknown> {
-  claims: {
-    sub: string;
-    email?: string;
-    name?: string;
-  };
+  user: User;
+  accessToken: string;
+  permissions: string[];
+  email: string;
 }
 
 export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
@@ -76,16 +76,20 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
         tshirtSize: { type: 'string', required: true },
       },
       async args => {
-        // For now, just return a mock order confirmation
-        const orderId = Math.floor(Math.random() * 10000);
         const order = {
-          id: orderId,
-          userId: this.props.claims.sub,
-          email: this.props.claims.email,
+          id: crypto.randomUUID(),
+          userId: this.props.user.id,
+          email: this.props.email,
           ...args,
           orderDate: new Date().toISOString(),
           status: 'confirmed',
         };
+
+        await this.env.ORDERS.put(
+          `order:${order.userId}:${order.id}`,
+          JSON.stringify(order),
+          { expirationTtl: 60 * 60 * 24 * 30 }, // Store for 30 days
+        );
 
         return {
           content: [
@@ -104,15 +108,26 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
 
     // List orders tool
     this.server.tool('listMcpShopOrders', 'Lists the orders placed by the user at mcp.shop', {}, async () => {
-      // For now, return empty orders
+      const userId = this.props.user.id;
+      const { keys } = await this.env.ORDERS.list({
+        prefix: `order:${userId}:`,
+      });
+
+      const orders = await Promise.all(
+        keys.map(async ({ name }) => {
+          const data = await this.env.ORDERS.get(name);
+          return data ? JSON.parse(data) : null;
+        }),
+      );
+
       return {
         content: [
           {
             type: 'text',
             text: JSON.stringify({
+              title: 'Your MCP Shop Orders',
               status: 'success',
-              orders: [],
-              message: 'No orders found. Place an order first!',
+              orders: orders.filter(Boolean), // Filter out nulls
             }),
           },
         ],

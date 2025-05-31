@@ -89,7 +89,7 @@ export const AuthHandler: ExportedHandler<Env & { OAUTH_PROVIDER: any }> = {
         `
         <!DOCTYPE html>
         <html>
-        <head><title>MCP Shop - WorkOS Demo</title></head>
+        <head><title>MCP Shop on Cloudflare - WorkOS Demo</title></head>
         <body>
           <h1>MCP Shop - WorkOS AuthKit Demo</h1>
           <p>Connect your MCP client to: <code>${url.origin}/mcp</code></p>
