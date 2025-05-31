@@ -8,14 +8,6 @@ binding = "ORDERS"
 id = "8f632b0982bf4095865617a0f0a34bde" 
 
 [[kv_namespaces]]
-binding = "OAUTH_CLIENTS"
-id = "2c2e850809ca40fa84d0a634a94982b4"
-
-[[kv_namespaces]]
-binding = "OAUTH_TOKENS"
-id = "9272d592cc684ff0bbe153ca81f4bed6"
-
-[[kv_namespaces]]
 binding = "OAUTH_KV"
 id = "c88df7006fb64c1faccb42c37b2bdd06"
 
