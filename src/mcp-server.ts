@@ -53,7 +53,7 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
     this.server.tool(
       'setDemoModa',
       'FOR DEMO: Configure user simulation',
-      { mode: z.enum(['normal', 'banned', 'admin']) },
+      { mode: z.enum(['normal', 'banned']) },
       async ({ mode }) => {
         await this.ctx.storage.put('demoMode', mode);
         return {
@@ -246,7 +246,6 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
   }
 
   private async isAdmin() {
-    const mode = await this.getMode();
-    return mode === 'admin';
+    return this.props.permissions.includes('shop:admin');
   }
 }
