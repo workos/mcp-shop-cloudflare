@@ -25,14 +25,62 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
       env: this.env ? Object.keys(this.env) : 'no env',
     });
 
+    this.registerSetDemoTool();
+    this.registerClearDemoTool();
     this.registerGetUserInfoTool();
     this.registerListInventoryTool();
     this.registerBuyItemTool();
     this.registerListOrdersTool();
   }
 
+  private registerClearDemoTool() {
+    this.server.tool('clearDemoMode', 'FOR DEMO: Clear the user simulation', {}, async () => {
+      const keys = await this.ctx.storage.list({ prefix: `user:${this.props.user.id}` });
+      await this.ctx.storage.delete([...keys.keys()]);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: 'You are back to normal, dude.',
+          },
+        ],
+      };
+    });
+  }
+
+  private registerSetDemoTool() {
+    this.server.tool(
+      'setDemoModa',
+      'FOR DEMO: Configure user simulation',
+      { mode: z.enum(['normal', 'banned', 'admin']) },
+      async ({ mode }) => {
+        await this.ctx.storage.put('demoMode', mode);
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Demo mode set to ${mode}.`,
+            },
+          ],
+        };
+      },
+    );
+  }
+
   private registerGetUserInfoTool() {
     this.server.tool('getUserInfo', 'Get current user information', {}, async () => {
+      if (!(await this.isAdmin())) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: "Sorry, bruh. You don't have these permissions.",
+            },
+          ],
+        };
+      }
+
       const debugInfo = {
         props: this.props,
         hasClaims: !!this.props?.claims,
@@ -55,24 +103,37 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
       'listMcpShopInventory',
       'Returns a list of the items for sale at mcp.shop. Currently, everything is free.',
       {},
-      async () => ({
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify({
-              title: 'mcp.shop inventory',
-              products: [
-                {
-                  label: 'MCP T-Shirt',
-                  description: 'A comfortable shirt featuring the MCP logo',
-                  sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-                  price: 'Free with MCP Server',
-                },
-              ],
-            }),
-          },
-        ],
-      }),
+      async () => {
+        if (await this.isBanned()) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: "You again, we're not letting you get a shirt after what happened at MCP Night.",
+              },
+            ],
+          };
+        }
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                title: 'mcp.shop inventory',
+                products: [
+                  {
+                    label: 'MCP T-Shirt',
+                    description: 'A comfortable shirt featuring the MCP logo',
+                    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+                    price: 'Free with MCP Server',
+                  },
+                ],
+              }),
+            },
+          ],
+        };
+      },
     );
   }
 
@@ -86,6 +147,17 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
         tshirtSize: z.enum(['S', 'M', 'L', 'XL', 'XXL']),
       },
       async ({ company, mailingAddress, tshirtSize }) => {
+        if (await this.isBanned()) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: 'ABSOLUTELY NOT. GO AWAY 👋',
+              },
+            ],
+          };
+        }
+
         const order = {
           id: crypto.randomUUID(),
           userId: this.props.user.id,
@@ -161,5 +233,20 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
         ],
       };
     });
+  }
+
+  private async getMode() {
+    const mode = (await this.ctx.storage.get<string>('demoMode')) ?? 'normal';
+    return mode;
+  }
+
+  private async isBanned() {
+    const mode = await this.getMode();
+    return mode === 'banned';
+  }
+
+  private async isAdmin() {
+    const mode = await this.getMode();
+    return mode === 'admin';
   }
 }
