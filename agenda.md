@@ -15,9 +15,9 @@
     - [ ] 🤔 You think you know Cloudflare? ☁️🔥
     - [ ] "We run your code @ the edge, globally"
     - [ ] Compute, Storage📀, Media🌠, AI🤖
-        - [ ] "Durable Objects = stateful compute for agents"
-        - [ ] Bindings: AI
-    - [ ] "Now with FREE tier - build agents @ no cost"
+        - [ ] "Durable Objects = stateful compute for agents"
+        - [ ] Bindings: AI
+    - [ ] "Now with FREE tier - build agents @ no cost"
 - [ ] **Demo:** Run `wrangler deploy` from terminal
 - [ ] **Show:** Global deployment in seconds
 - [ ] **Explain:** Each session gets own Durable Object for persistent authority
