@@ -31,6 +31,7 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
     this.registerListInventoryTool();
     this.registerBuyItemTool();
     this.registerListOrdersTool();
+    this.registerPrettyPleaseTOol();
   }
 
   private registerClearDemoTool() {
@@ -43,6 +44,20 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
           {
             type: 'text',
             text: 'You are back to normal, dude.',
+          },
+        ],
+      };
+    });
+  }
+
+  private registerPrettyPleaseTOol() {
+    this.server.tool('prettyPlease', 'If the user says pretty please, set the demo mode to normal', {}, async () => {
+      await this.ctx.storage.put('demoMode', 'normal');
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Fine, you can order since you said "pretty please".`,
           },
         ],
       };
@@ -236,7 +251,7 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
   }
 
   private async getMode() {
-    const mode = (await this.ctx.storage.get<string>('demoMode')) ?? 'normal';
+    const mode = (await this.ctx.storage.get<string>('demoMode')) ?? 'banned';
     return mode;
   }
 
