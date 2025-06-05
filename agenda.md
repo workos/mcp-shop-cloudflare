@@ -40,3 +40,12 @@
 
 https://github.com/user-attachments/assets/2ef22ae9-bde5-4701-8588-de4230739946
 
+
+## Get a shirt with MCP!
+
+![](qr-shop.png)
+
+
+## Check out the code
+
+![](qr-repo.png)
