@@ -1,74 +1,36 @@
-# Agents, Access & The Future of Machine Identity - CHECKLIST
+# Agents, Access & The Future of Machine Identity
 
-**Duration:** 15 minutes
-**Speakers:** Lizzie Siegle (Cloudflare) | Nick Nisi (WorkOS)
+## Opening: The Problem (1 min)
+- [ ] **Together:** Introduce the core problem - agents acting on behalf of humans
+- [ ] Set up the question: "How do you control what they're allowed to do?"
 
----
+## Infrastructure Foundation (4 min)
+- [ ] Explain agents need persistent, stateful infrastructure
+- [ ] **Demo:** Run `wrangler deploy` from terminal
+- [ ] **Show:** Global deployment in seconds
+- [ ] **Explain:** Each session gets own Durable Object for persistent authority
+- [ ] **Demo:** Connect MCP server to Claude
+- [ ] **Show:** OAuth consent screen appears
+- [ ] **Handoff:** Pass to second presenter for auth flow
 
-## ☁️🔥 Cloudflare 101 (1 min) - LIZZIE
-- [ ] "We run your code at the edge, globally"
-- [ ] "Durable Objects = stateful compute for agents"
-- [ ] "Now with FREE tier - build agents at no cost"
+## Deputization in Action (5 min)
+- [ ] **Second presenter:** Narrate OAuth consent flow as "deputizing the agent"
+- [ ] **Demo:** "Claude, buy me a large MCP shirt, ship to my address"
+- [ ] **Show:** Agent places real order
+- [ ] **Emphasize:** "Agent just spent my money with my explicit authority"
+- [ ] **Demo:** Show WorkOS dashboard audit trail
+- [ ] **Demo:** Show Cloudflare KV storage with user traces
+- [ ] **Handoff:** Pass back to first presenter
 
-## 🔐 WorkOS 101 (1 min) - NICK
-- [ ] "Enterprise auth made simple"
-- [ ] "Not just for humans - works for machines too"  
-- [ ] "OAuth that scales from startups to enterprise"
+## Authority Controls (4 min)
+- [ ] **First presenter:** Use `setDemoModa` to ban user
+- [ ] **Demo:** "Claude, try to buy another shirt"
+- [ ] **Show:** "ABSOLUTELY NOT. GO AWAY 👋" response
+- [ ] **Demo:** Try "Pretty Please" tool
+- [ ] **Show:** Still rejected
+- [ ] **Emphasize:** Authority instantly revoked across all sessions
 
-## 🤖 MCP (2 min)
-- [ ] "Model Context Protocol - how AI talks to tools"
-- [ ] "You know GitHub Copilot? It uses MCP to read/write your code"
-- [ ] "Same idea: agents acting on YOUR behalf with YOUR permissions"
-
-## 🐙🐱 GitHub Example (1 min)
-- [ ] "GitHub MCP server lets AI manage your repos"
-- [ ] "But it needs YOUR GitHub token"
-- [ ] "Same auth pattern we're using for the shop"
-
-## 🚀 Deploy Button (1 min)
-- [ ] "One click → your MCP server is live on Cloudflare"
-- [ ] "Powered by Workers and Durable Objects"
-
-## 😬 Easy to do authless but... (2 min)
-- [ ] Show MCP Inspector connected
-- [ ] Call `listMcpShopInventory` - works!
-- [ ] Call `buyMcpShopItem` - works... wait, whose credit card?
-- [ ] "Anyone could order 1000 shirts to anywhere"
-
-## 😥 Auth Challenge (2 min)
-- [ ] "OAuth wasn't built for agents"
-- [ ] "Agents can't click 'Allow' buttons"
-- [ ] "WorkOS solves this with delegated auth"
-- [ ] "Cloudflare makes it stateful with Durable Objects"
-
-## 💰 Benefits (2 min)
-- [ ] Show OAuth flow → authorize agent
-- [ ] Show how state persists in Durable Object
-- [ ] "Now orders are tied to real users"
-- [ ] "Audit trail, rate limiting, revocation"
-
-## 🫵 Know Who You Are (1 min)
-- [ ] Show order with user info attached
-- [ ] "Every action traced to who authorized it"
-- [ ] "WorkOS tracks the delegation chain"
-
-## 👚 Buy Shirt (1 min)
-- [ ] Complete the purchase flow
-- [ ] Show `listMcpShopOrders` with user's order
-- [ ] "Stored in Cloudflare KV with full audit trail"
-
-## 🚫 Limit Usage (1 min)
-- [ ] "Rate limit by user identity, not by agent"
-- [ ] "Permission scopes enforced at the edge"
-- [ ] "Revoke access anytime"
-
-## 🎬 Wrap Up (1 min)
-- [ ] "Deploy on Cloudflare today - free tier available"
-- [ ] "Add WorkOS auth to any MCP server"
-- [ ] Show QR code/link
-- [ ] "Questions? Find us after!"
-
----
-
-## 🎯 CORE MESSAGE
-"Cloudflare + WorkOS = Secure agent infrastructure"
+## Takeaways (1 min)
+- [ ] **Together:** "Think deputies, not users"
+- [ ] **Key questions:** Can you revoke authority instantly? Do you know who authorized every action?
+- [ ] **Call to action:** Repository link in chat
