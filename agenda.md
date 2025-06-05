@@ -34,3 +34,9 @@
 - [ ] **Together:** "Think deputies, not users"
 - [ ] **Key questions:** Can you revoke authority instantly? Do you know who authorized every action?
 - [ ] **Call to action:** Repository link in chat
+
+
+---
+
+https://github.com/user-attachments/assets/2ef22ae9-bde5-4701-8588-de4230739946
+
