@@ -251,7 +251,7 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
   }
 
   private async getMode() {
-    const mode = (await this.ctx.storage.get<string>('demoMode')) ?? 'banned';
+    const mode = (await this.ctx.storage.get<string>('demoMode')) ?? 'normal';
     return mode;
   }
 
