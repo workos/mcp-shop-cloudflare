@@ -51,7 +51,7 @@ export class McpShopServer extends McpAgent<Env, unknown, AuthContext> {
 
   private registerSetDemoTool() {
     this.server.tool(
-      'setDemoModa',
+      'setDemoMode',
       'FOR DEMO: Configure user simulation',
       { mode: z.enum(['normal', 'banned']) },
       async ({ mode }) => {
